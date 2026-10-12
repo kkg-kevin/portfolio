@@ -1,0 +1,28 @@
+node_modules
+dist
+coverage
+*.local
+*.log
+
+# Environment files (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Hosting
+.vercel
+.netlify
+
+# Raw source screenshots and photos. The optimised copies the site uses are in public/.
+/images
+
+# Held back until the References section no longer lists a referee's contact details.
+# Remove this line once the file has been replaced.
+/public/Kevin_Kihara_Githinji_CV.pdf

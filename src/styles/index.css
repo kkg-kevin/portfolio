@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Tailwind v4 reads these and generates utilities from them,
+ * e.g. --color-card -> bg-card, text-card, border-card.
+ */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  /* Surfaces */
+  --color-bg: #0b1020;
+  --color-bg-alt: #101729;
+  --color-card: #151d31;
+  --color-raised: #1b2640;
+  --color-line: #28344b;
+  --color-line-strong: #3a4a6b;
+
+  /* Text. ink-3 is lightened from the #7E8BA3 starting value so that it
+     keeps a 4.5:1 contrast ratio on the raised surface as well. */
+  --color-ink: #f4f7fc;
+  --color-ink-2: #a6b2c8;
+  --color-ink-3: #8b98b0;
+
+  /* Accents. Blue carries the identity; mint is for selected highlights. */
+  --color-accent: #4f8cff;
+  --color-accent-hover: #73a4ff;
+  --color-accent-soft: #9dbfff;
+  --color-mint: #38d9a9;
+
+  /* Status */
+  --color-danger: #ff8f8f;
+  --color-success: #4fd6a0;
+
+  /* Drop shadow under raised panels */
+  --color-shadow: rgb(0 0 0 / 0.45);
+
+  --ease-out-soft: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  /*
+   * Light theme. The same token names are given light values, so every
+   * component follows without theme-specific classes. Accents are darker
+   * here so that text and buttons keep a 4.5:1 contrast ratio.
+   * The attribute is set by src/lib/theme.ts and the script in index.html.
+   */
+  :root[data-theme='light'] {
+    color-scheme: light;
+
+    --color-bg: #f7f9fc;
+    --color-bg-alt: #eef2f8;
+    --color-card: #ffffff;
+    --color-raised: #e8eef7;
+    --color-line: #d5ddea;
+    --color-line-strong: #afbcd1;
+
+    --color-ink: #0b1020;
+    --color-ink-2: #3f4b63;
+    --color-ink-3: #5a6780;
+
+    --color-accent: #2459d6;
+    --color-accent-hover: #1a47b4;
+    --color-accent-soft: #3f7af0;
+    --color-mint: #086a4f;
+
+    --color-danger: #b42318;
+    --color-success: #086a4f;
+
+    --color-shadow: rgb(30 41 59 / 0.14);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Height of the fixed header, so anchored sections are not hidden under it. */
+    scroll-padding-top: 4rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Sections receive programmatic focus after anchor navigation. */
+  section[tabindex='-1']:focus {
+    outline: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@layer components {
+  /* Hero entrance. Each element sets its own animation-delay inline. */
+  .rise {
+    animation: rise 0.5s var(--ease-out-soft) both;
+  }
+
+  /* Faint engineering grid behind the hero, faded out towards the edges. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 75%);
+  }
+}
